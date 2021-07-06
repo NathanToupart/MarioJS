@@ -48,6 +48,9 @@ var backgroundSon = new Audio("./sound/MarioWorld.mp3");
 
 
 scene("game", ({ level, score }) => {
+  looseSound.pause();
+  lvlFinishSound.pause();
+  backgroundSon.play();
   layers(['bg', 'obj', 'ui'], 'obj')
 
   const maps = [
@@ -263,6 +266,35 @@ scene("game", ({ level, score }) => {
 
 scene('lose', ({ score }) => {
   add([text("You Lose avec " + score, 32), origin('center'), pos(width()/2, height()/ 2)])
+  add([
+		rect(160, 20),
+		origin('center'), pos(width()/2, height()/ 2+75),
+		"button",
+		{
+			clickAction: () => go('game', { level: 0, score: 0}),
+		},
+	]);
+
+	add([
+		text("Play Again"),
+		origin('center'), pos(width()/2, height()/ 2+75),
+		color(0, 0, 0)
+	]);
+
+  action("button", b => {
+
+		if (b.isHovered()) {
+			b.use(color(0.7, 0.7, 0.7));
+		} else {
+			b.use(color(1, 1, 1));
+		}
+
+		if (b.isClicked()) {
+			b.clickAction();
+		}
+
+	});
+  
 })
 
 scene('finish', ({ score }) => {
@@ -284,9 +316,93 @@ scene('finish', ({ score }) => {
                 str = str + tmp[0] + "  "+ tmp[1] + "\n";
               }
               add([text("You Win avec "+ score+ '\n \n'+str, 32), origin('center'), pos(width()/2, height()/ 2)])
+              add([
+                rect(160, 20),
+                origin('center'), pos(width()/2, height()/ 2+150),
+                "button",
+                {
+                  clickAction: () => go('game', { level: 0, score: 0}),
+                },
+              ]);
+            
+              add([
+                text("Play Again"),
+                origin('center'), pos(width()/2, height()/ 2+150),
+                color(0, 0, 0)
+              ]);
+            
+              action("button", b => {
+            
+                if (b.isHovered()) {
+                  b.use(color(0.7, 0.7, 0.7));
+                } else {
+                  b.use(color(1, 1, 1));
+                }
+            
+                if (b.isClicked()) {
+                  b.clickAction();
+                }
+            
+              });
              }
     });
   
 })
 
-start("game", { level: 0, score: 0})
+
+scene("menu", () => {
+
+	add([
+		text("Mario game"),
+    origin('center'), pos(width()/2, height()/ 2-30),
+		scale(3),
+	]);
+
+	add([
+		rect(160, 20),
+		origin('center'), pos(width()/2, height()/ 2+30),
+		"button",
+		{
+			clickAction: () => go('game', { level: 0, score: 0}),
+		},
+	]);
+
+	add([
+		text("Play game"),
+		origin('center'), pos(width()/2, height()/ 2+30),
+		color(0, 0, 0)
+	]);
+
+	add([
+		rect(160, 20),
+		origin('center'), pos(width()/2, height()/ 2+60),
+		"button",
+		{
+			clickAction: () => window.open('https://kaboomjs.com/', '_blank'),
+		},
+	]);
+
+	add([
+		text("Learn Kaboom.js"),
+		origin('center'), pos(width()/2, height()/ 2+60),
+		color(0, 0, 0)
+	]);
+
+	action("button", b => {
+
+		if (b.isHovered()) {
+			b.use(color(0.7, 0.7, 0.7));
+		} else {
+			b.use(color(1, 1, 1));
+		}
+
+		if (b.isClicked()) {
+			b.clickAction();
+		}
+
+	});
+
+});
+
+// start("game", { level: 0, score: 0})
+start("menu")
