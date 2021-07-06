@@ -266,7 +266,27 @@ scene('lose', ({ score }) => {
 })
 
 scene('finish', ({ score }) => {
-  add([text("You Win avec "+ score, 32), origin('center'), pos(width()/2, height()/ 2)])
+  $.get( "score.php", { name: "Nathan", score: score+"" } )
+  $.ajax({
+    type: "GET",
+    url: "score.txt",
+    error:function(msg){
+             // message en cas d'erreur :
+             alert( "Error !: " + msg );
+             },
+    success:function(data){
+             // affiche le contenu du fichier dans le conteneur dédié :
+              var array = data.split(';');
+              var str = "HALL OF FAME !!! \nPlayer   Coin \n";
+              var tmp;
+              for (let i = 0; i < array.length-1; i++) {
+                tmp = array[i].split("-");
+                str = str + tmp[0] + "  "+ tmp[1] + "\n";
+              }
+              add([text("You Win avec "+ score+ '\n \n'+str, 32), origin('center'), pos(width()/2, height()/ 2)])
+             }
+    });
+  
 })
 
 start("game", { level: 0, score: 0})
